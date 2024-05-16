@@ -25,8 +25,7 @@ fs.ensureDirSync(buildPath);
 for (let contractName in output) {
   const contract = output[contractName];
   console.log("Contract name", contractName);
-  const contractFileName = contractName + ".json";
+  const contractFileName = contractName.replace(":", "") + ".json"; // Remove the colon from the contract name
   fs.outputJsonSync(path.resolve(buildPath, contractFileName), contract);
 }
-
 console.log(output);
