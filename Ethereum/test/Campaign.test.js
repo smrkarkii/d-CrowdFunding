@@ -22,7 +22,7 @@ beforeEach(async () => {
  await factory.methods.createCampaign('100').send({from:accounts[0] ,gas:100000})
 const address = await campaignInstance.getDeployedCampaigns().call();
 campaignAddress = address[0];
-campaignInstance = await web3.eth.Contract(JSON.parse(campaign.interface,campaignAddress)
+campaignInstance = await web3.eth.Contract(JSON.parse(campaign.interface,campaignAddress);
 
 
 });

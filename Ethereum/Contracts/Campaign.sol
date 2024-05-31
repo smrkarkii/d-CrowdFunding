@@ -90,4 +90,22 @@ contract Campaign {
         request.receiver.transfer(request.amount);
         request.isApproved = true;
     }
+
+    function getSummary()
+        public
+        view
+        returns (uint, uint, uint, uint, address)
+    {
+        return (
+            minContributions,
+            address(this).balance,
+            requests.length,
+            approversCount,
+            manager
+        );
+    }
+
+    function getRequestsCount() public view returns (uint) {
+        return requests.length;
+    }
 }
