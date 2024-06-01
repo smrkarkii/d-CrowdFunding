@@ -41,7 +41,7 @@ const create = () => {
       setComplete(false);
       clearStatusMessage();
       const contractAddress = await contractFactory.methods
-        .createCampaign(minimum)
+        .createCampaign(minimum * 1000000000000000000)
         .send({ from: ac[0] });
       console.log(contractAddress);
 
@@ -70,7 +70,7 @@ const create = () => {
             onChange={(event) => setMinimum(event.target.value)}
             className="bg-yellow-200 border-yellow-500 ml-5 mt-5"
           />
-          <span>wei</span>
+          <span>Ethers</span>
           <div>
             <button className="w-48 h-10 bg-yellow-500 rounded-md mt-5 text-white ">
               Create Campaign

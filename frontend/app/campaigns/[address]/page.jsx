@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../../components/Layout";
 import Campaign from "../../../Campaign";
+import ContributeForm from "../../../components/ContributeForm/page";
 
 const page = ({ params }) => {
   const [summary, setSummary] = useState({
@@ -21,12 +22,13 @@ const page = ({ params }) => {
         const temp = await campaign.methods.getSummary().call();
 
         const summaryData = {
-          minimumContribution: temp[0].toString(),
-          balance: temp[1].toString(),
+          minimumContribution: Number(temp[0].toString()) / 1000000000000000000,
+          balance: Number(temp[1].toString()) / 100000000000000000,
           requestsCount: temp[2].toString(),
           approversCount: temp[3].toString(),
           manager: temp[4].toString(),
         };
+        console.log(summaryData);
 
         setSummary(summaryData);
       } catch (e) {
@@ -34,35 +36,62 @@ const page = ({ params }) => {
       }
     };
     fetchSummary();
-    console.log(summary);
   }, [contractAddress]);
   return (
     <div>
       <Layout />
 
-      <h1>Campaign {params.address}</h1>
-      <div className="flex flex-row">
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-2">
-            <div className="border border-black w-96 h-16 ">
-              Minimum Contribution {summary.minimumContribution}
+      <div className="w-[75%] mx-auto pt-10">
+        <h1 className="text-sm italic ">Campaign {params.address}</h1>
+        <div className=" block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-300 dark:border-gray-400 dark:hover:bg-gray-400 w-fit h-fit ">
+          <p className="pt-4 text-center inline">Manager of Contract: </p>
+          <p className="text-center inline text-sm">{summary.manager}</p>
+          <p className="italic text-sm font-extralight text-center">
+            The manager created the campaign and can request to withdraw money.
+          </p>
+        </div>
+        <div className="flex flex-row gap-10 pt-6  ">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row gap-2">
+              <div className=" block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-300 dark:border-gray-400 dark:hover:bg-gray-400 w-80 h-40 ">
+                <p className="text-center text-3xl">
+                  {summary.minimumContribution} Ethers
+                </p>
+
+                <p className="pt-4 text-center">Minimum Contribution</p>
+                <p className="italic text-sm font-extralight text-center">
+                  This is the amount that contributer must contribute at least.
+                </p>
+              </div>
+              <div className=" block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-300 dark:border-gray-400 dark:hover:bg-gray-400 w-80 h-40 ">
+                <p className="text-center text-3xl">{summary.balance} Ethers</p>
+                <p className="pt-4 text-center">Balance</p>
+                <p className="italic text-sm font-extralight text-center">
+                  This is the amount remaining for the project.
+                </p>
+              </div>
             </div>
-            <div className="border border-black w-96 h-16 ">
-              Campaign balance {summary.balance}
+            <div className="flex flex-row gap-2">
+              <div className=" block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-300 dark:border-gray-400 dark:hover:bg-gray-400 w-80 h-40 ">
+                <p className="text-center text-3xl">{summary.requestsCount}</p>
+                <p className="pt-4 text-center">Total no of Requests</p>
+                <p className="italic text-sm font-extralight text-center ">
+                  This represents the total no of withdraw requested by the
+                  manager.
+                </p>
+              </div>
+
+              {/* <div className="border border-black w-96 h-32 ">
+                Manager : {summary.manager}
+              </div> */}
             </div>
           </div>
-          <div className="flex flex-row gap-2">
-            <div className="border border-black w-96 h-16 ">
-              No of Requests {summary.requestsCount}
-            </div>
-            <div className="border border-black w-96 h-16 ">
-              Manager : {summary.manager}
-            </div>
-          </div>
+
+          <ContributeForm address={contractAddress} />
         </div>
-        <div>
-          <h1>Contribute to the Campagin</h1>
-        </div>
+        <button className="w-40 h-10 border text-lg border-yellow-500 rounded-md ml-3 mt-3 ">
+          View Requests{" "}
+        </button>
       </div>
     </div>
   );
