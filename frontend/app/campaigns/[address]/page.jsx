@@ -1,9 +1,10 @@
 "use client";
-
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Layout from "../../../components/Layout";
 import Campaign from "../../../Campaign";
 import ContributeForm from "../../../components/ContributeForm/page";
+import Link from "next/link";
 
 const page = ({ params }) => {
   const [summary, setSummary] = useState({
@@ -89,9 +90,11 @@ const page = ({ params }) => {
 
           <ContributeForm address={contractAddress} />
         </div>
-        <button className="w-40 h-10 border text-lg border-yellow-500 rounded-md ml-3 mt-3 ">
-          View Requests{" "}
-        </button>
+        <Link href={`/campaigns/${contractAddress}/requests`}>
+          <button className="w-40 h-10 border text-lg border-yellow-500 rounded-md ml-3 mt-3 ">
+            View Requests{" "}
+          </button>
+        </Link>
       </div>
     </div>
   );

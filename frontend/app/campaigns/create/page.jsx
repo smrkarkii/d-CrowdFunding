@@ -8,12 +8,13 @@ import LoadingIcons from "react-loading-icons";
 import { Bars } from "react-loading-icons";
 import SpinningCircles from "react-loading-icons/dist/esm/components/spinning-circles";
 
-const create = () => {
+const page = () => {
   const [isComplete, setComplete] = useState(true);
   const [minimum, setMinimum] = useState("");
   const [accounts, setAccounts] = useState([]);
   const [errormessage, setErrormessage] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
+  // const router = useRouter();
 
   const clearErrorMessage = () => {
     setTimeout(() => {
@@ -37,7 +38,6 @@ const create = () => {
     console.log("accounts", accounts.options);
 
     try {
-      setStatusMessage("Creating the Campaign");
       setComplete(false);
       clearStatusMessage();
       const contractAddress = await contractFactory.methods
@@ -60,6 +60,9 @@ const create = () => {
       <div className="pl-10">
         <p className="text-white bg-red-500 absolute right-0 top-4 w-96">
           {errormessage}
+        </p>
+        <p className="text-white bg-green-500 absolute right-0 top-4 w-96">
+          {statusMessage}
         </p>
         <h1 className="text-2xl font-bold">Create a new campaign</h1>
         <form action="" onSubmit={onSubmit}>
@@ -88,4 +91,4 @@ const create = () => {
   );
 };
 
-export default create;
+export default page;

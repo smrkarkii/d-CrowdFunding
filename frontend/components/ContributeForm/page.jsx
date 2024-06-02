@@ -1,22 +1,35 @@
 "use client";
-import React, { useEffect, useState } from "react";
 
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import SpinningCircles from "react-loading-icons/dist/esm/components/spinning-circles";
 import Campaign from "../../Campaign";
 import web3 from "../../web3";
 
 const page = ({ address }) => {
   const [message, setMessage] = useState("");
+  const [errormessage, setError] = useState("");
   const [contribution, setContribution] = useState("");
   const contractAddress = address;
   console.log("Contract address from form", contractAddress);
   const [isComplete, setComplete] = useState(true);
 
+  const clearErrorMessage = () => {
+    setTimeout(() => {
+      setError("");
+    }, 3000); // Clear the error message after 5 seconds
+  };
+  const clearStatusMessage = () => {
+    setTimeout(() => {
+      setMessage("");
+    }, 3000); // Clear the error message after 5 seconds
+  };
   const submitForm = async (event) => {
     event.preventDefault();
     setComplete(false);
 
     try {
+      clearStatusMessage();
       console.log("contributing ");
       const ac = await web3.eth.getAccounts();
       const campaign = Campaign(address);
@@ -25,18 +38,30 @@ const page = ({ address }) => {
         from: ac[0],
       });
       setComplete(true);
+
       setMessage("Successfully contributed");
+      clearStatusMessage();
+      setComplete(true);
     } catch (e) {
       console.log(e);
-      setMessage(e);
-    } finally {
+      setError(e.message);
+      clearErrorMessage();
       setComplete(true);
-      setContribution("");
     }
   };
 
   return (
     <div>
+      {errormessage && (
+        <p className="text-white bg-red-500 absolute right-0 top-4 w-96 p-2">
+          {errormessage}
+        </p>
+      )}
+      {message && (
+        <p className="text-white bg-green-500 absolute right-0 top-4 w-96 p-2">
+          {message}
+        </p>
+      )}
       <form
         onSubmit={submitForm}
         action="
@@ -64,8 +89,6 @@ const page = ({ address }) => {
         ) : (
           ""
         )}
-
-        <p className="absolute right-0   bg-green-500 rounded-lg">{message}</p>
       </form>
     </div>
   );
