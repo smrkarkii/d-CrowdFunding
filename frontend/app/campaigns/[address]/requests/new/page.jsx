@@ -5,8 +5,14 @@ import Campaign from "../../../../../Campaign";
 import Layout from "../../../../../components/Layout";
 import Link from "next/link";
 import web3 from "../../../../../web3";
+import SpinningCircles from "react-loading-icons/dist/esm/components/spinning-circles";
+
+// import { useRouter } from "next/router";
 
 const page = ({ params }) => {
+  // const router = useRouter();
+  const [isComplete, setComplete] = useState(true);
+
   const contractAddress = params.address;
   const [description, setDescription] = useState("");
   const [amount, setamount] = useState("");
@@ -28,6 +34,7 @@ const page = ({ params }) => {
   const submitForm = async (event) => {
     event.preventDefault();
     try {
+      setComplete(false);
       const campaign = Campaign(contractAddress);
       const accounts = await web3.eth.getAccounts();
       await campaign.methods
@@ -39,20 +46,31 @@ const page = ({ params }) => {
         .send({
           from: accounts[0],
         });
+
       setMessage("Request created");
       clearStatusMessage();
+      setDescription("");
+      setreceipent("");
+      setamount("");
+      setComplete(true);
+
+      // router.push(`/campaigns/${contractAddress}/requests`);
     } catch (e) {
       console.log(e);
       setError(e.message);
       clearErrorMessage();
+      setComplete(true);
     }
   };
 
   return (
     <div className=" ">
       <Layout />
-      <h1>Create a new request for Contract {contractAddress}</h1>
-      <div className="w-[70%] mx-auto">
+
+      <div className="w-[70%] h-96 mx-auto shadow-sm shadow-gray-500 p-10">
+        <h1 className="text-center mb-5 font-bold text-3xl">
+          Create a new request
+        </h1>
         {errorMessage && (
           <p className="text-white bg-red-500 absolute right-0 top-4 w-96 p-2">
             {errorMessage}
@@ -98,6 +116,16 @@ const page = ({ params }) => {
             <button className="mt-2 w-48 h-10 bg-yellow-500 rounded-md  ">
               Create Request
             </button>
+            <Link href={`/campaigns/${contractAddress}/requests/`}>
+              <button className="mt-2 w-48 h-10 bg-yellow-500 rounded-md  ">
+                View Requests
+              </button>
+            </Link>
+            {!isComplete ? (
+              <SpinningCircles fill="black" className="w-10 h-10 inline pl-3" />
+            ) : (
+              ""
+            )}
           </div>
         </form>
       </div>

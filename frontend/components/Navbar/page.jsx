@@ -13,8 +13,12 @@ const Navbar = () => {
   return (
     <>
       <div className=" flex max-w-[1240px] mx-auto items-center h-24 pl-10">
-        <h1 className="text-3xl font-bold text-yellow-500 fixed">K-BLOGS</h1>
-        <ul className=" hidden md:flex mx-auto space-evenly">
+        <Link href={`/`}>
+          <h1 className="text-3xl font-bold text-yellow-500 pt-[-5px]">
+            D-Funding
+          </h1>
+        </Link>{" "}
+        <ul className=" hidden md:flex pl-10 space-evenly">
           {/* <li className="p-12">Discover</li> */}
           {/* <li className="p-12">Home</li> */}
           <Link href="/">
@@ -23,7 +27,7 @@ const Navbar = () => {
           <Link href="/campaigns/create">
             <li className="p-12">Create Campaign</li>{" "}
           </Link>
-          <li className="p-12">Donations</li>
+          {/* <li className="p-12">Donations</li> */}
         </ul>
         <div className="fixed right-2 md:hidden" onClick={handleNav}>
           {!nav ? <AiOutlineClose /> : <AiOutlineMenu />}

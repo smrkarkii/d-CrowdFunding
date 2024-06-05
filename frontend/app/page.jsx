@@ -41,11 +41,11 @@ const Page = () => {
           </ul>
         </div>
         <div>
-          <Link href="/campaigns/create">
+          {/* <Link href="/campaigns/create">
             <button className="w-48 h-10 bg-yellow-500 rounded-md absolute right-10 ">
               Create Campaign
             </button>
-          </Link>
+          </Link> */}
         </div>
       </div>
     </Layout>
